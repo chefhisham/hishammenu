@@ -1,0 +1,959 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Royal Qatari Desserts Menu</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;900&family=Cormorant+Garamond:wght@400;600;700&display=swap');
+        
+        body {
+            font-family: 'Cormorant Garamond', serif;
+            background-color: #f5f1e8;
+            overflow-x: hidden;
+            margin: 0;
+            padding: 0;
+            color: #8a7047;
+        }
+        
+        .royal-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("Qasr.jpeg");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            z-index: -2;
+            opacity: 0.8;
+            filter: brightness(110%);
+        }
+        
+        .castle-door {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 100;
+            display: flex;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23d2b48c' fill-opacity='0.1' fill-rule='evenodd'/%3E%3C/svg%3E");
+            cursor: pointer;
+        }
+        
+        .door-left, .door-right {
+            width: 50%;
+            height: 100%;
+            background-color: #e8dcc8;
+            background-image: linear-gradient(135deg, #e8dcc8 0%, #d9cdb3 100%);
+            position: relative;
+            transition: transform 2.5s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+        
+        .door-left {
+            border-right: 12px solid #c9b38c;
+            transform-origin: left;
+        }
+        
+        .door-right {
+            border-left: 12px solid #c9b38c;
+            transform-origin: right;
+        }
+        
+        .door-open .door-left {
+            transform: perspective(1500px) rotateY(-105deg);
+        }
+        
+        .door-open .door-right {
+            transform: perspective(1500px) rotateY(105deg);
+        }
+        
+        .door-handle {
+            width: 40px;
+            height: 80px;
+            background-color: #c9b38c;
+            background-image: linear-gradient(to bottom, #d2b48c 0%, #c9b38c 50%, #b8a27c 100%);
+            border-radius: 20px;
+            position: absolute;
+            top: 50%;
+            box-shadow: 0 0 20px rgba(201, 179, 140, 0.6);
+        }
+        
+        .door-left .door-handle {
+            right: 50px;
+        }
+        
+        .door-right .door-handle {
+            left: 50px;
+        }
+        
+        .door-design {
+            width: 80%;
+            height: 80%;
+            border: 12px solid #c9b38c;
+            border-image: linear-gradient(45deg, #d2b48c, #c9b38c, #b8a27c) 1;
+            margin: auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+        
+        .door-design::before {
+            content: '';
+            position: absolute;
+            top: -12px;
+            left: -12px;
+            right: -12px;
+            bottom: -12px;
+            border: 2px solid #d2b48c;
+            opacity: 0.3;
+            pointer-events: none;
+        }
+        
+        .door-pattern {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            opacity: 0.1;
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23d2b48c' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+        
+        .menu-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+            position: relative;
+        }
+        
+        .royal-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23d2b48c' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            z-index: -1;
+            opacity: 0.3;
+        }
+        
+        .royal-border {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            right: 20px;
+            bottom: 20px;
+            border: 2px solid #c9b38c;
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        .royal-corner {
+            position: fixed;
+            width: 50px;
+            height: 50px;
+            z-index: -1;
+        }
+        
+        .royal-corner-tl {
+            top: 10px;
+            left: 10px;
+            border-top: 4px solid #c9b38c;
+            border-left: 4px solid #c9b38c;
+        }
+        
+        .royal-corner-tr {
+            top: 10px;
+            right: 10px;
+            border-top: 4px solid #c9b38c;
+            border-right: 4px solid #c9b38c;
+        }
+        
+        .royal-corner-bl {
+            bottom: 10px;
+            left: 10px;
+            border-bottom: 4px solid #c9b38c;
+            border-left: 4px solid #c9b38c;
+        }
+        
+        .royal-corner-br {
+            bottom: 10px;
+            right: 10px;
+            border-bottom: 4px solid #c9b38c;
+            border-right: 4px solid #c9b38c;
+        }
+        
+        h1 {
+            font-family: 'Cinzel', serif;
+            color: #8a7047;
+            text-align: center;
+            font-size: 4rem;
+            margin-bottom: 2rem;
+            font-weight: 900;
+            text-shadow: 0 2px 10px rgba(138, 112, 71, 0.3);
+            position: relative;
+            padding-bottom: 1.5rem;
+        }
+        
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 4px;
+            background-image: linear-gradient(to right, transparent, #c9b38c, transparent);
+        }
+        
+        .royal-divider {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 2rem 0;
+        }
+        
+        .royal-divider::before,
+        .royal-divider::after {
+            content: '';
+            flex: 1;
+            height: 2px;
+            background-image: linear-gradient(to right, transparent, #c9b38c, transparent);
+        }
+        
+        .royal-divider-icon {
+            margin: 0 20px;
+            color: #c9b38c;
+            font-size: 1.5rem;
+        }
+        
+        .category-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+        
+        .category-card {
+            background-color: rgba(240, 233, 217, 0.9);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1), 0 0 10px rgba(201, 179, 140, 0.2);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            height: 160px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 1.5rem;
+            border: 1px solid rgba(201, 179, 140, 0.3);
+            backdrop-filter: blur(2px);
+        }
+        
+        .category-card::before {
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            right: 10px;
+            bottom: 10px;
+            border: 1px solid rgba(201, 179, 140, 0.2);
+            pointer-events: none;
+            border-radius: 8px;
+        }
+        
+        .category-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15), 0 0 15px rgba(201, 179, 140, 0.3);
+            border-color: rgba(201, 179, 140, 0.6);
+            background-color: rgba(240, 233, 217, 0.95);
+        }
+        
+        .category-title {
+            font-family: 'Cinzel', serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #8a7047;
+            position: relative;
+            padding-bottom: 1rem;
+            margin: 0;
+            z-index: 2;
+        }
+        
+        .category-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 2px;
+            background-color: #c9b38c;
+        }
+        
+        .gallery-container {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(245, 241, 232, 0.98);
+            z-index: 50;
+            padding: 3rem;
+            overflow-y: auto;
+        }
+        
+        .gallery-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+        
+        .gallery-header::after {
+            content: '';
+            position: absolute;
+            bottom: -20px;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background-image: linear-gradient(to right, transparent, #c9b38c, transparent);
+        }
+        
+        .back-button {
+            background-color: transparent;
+            color: #8a7047;
+            border: 2px solid #c9b38c;
+            padding: 0.75rem 2rem;
+            border-radius: 50px;
+            font-family: 'Cinzel', serif;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+        
+        .back-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 100%;
+            background-color: #c9b38c;
+            transition: all 0.3s ease;
+            z-index: -1;
+        }
+        
+        .back-button:hover {
+            color: #5c4f35;
+        }
+        
+        .back-button:hover::before {
+            width: 100%;
+        }
+        
+        .gallery-title {
+            font-family: 'Cinzel', serif;
+            color: #8a7047;
+            font-size: 3rem;
+            font-weight: 700;
+            margin: 0;
+            text-shadow: 0 2px 10px rgba(138, 112, 71, 0.3);
+        }
+        
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 4rem;
+        }
+        
+        .dessert-item {
+            background-color: #f0e9d9;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1), 0 0 10px rgba(201, 179, 140, 0.2);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(201, 179, 140, 0.3);
+            position: relative;
+            height: 300px;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .dessert-image {
+            height: 200px;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            position: relative;
+        }
+        
+        .dessert-info {
+            padding: 1.5rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            background-color: rgba(240, 233, 217, 0.9);
+        }
+        
+        .dessert-name {
+            font-family: 'Cinzel', serif;
+            font-size: 1.3rem;
+            color: #8a7047;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+        
+        .dessert-desc {
+            font-size: 1rem;
+            color: #8a7047;
+            line-height: 1.4;
+            opacity: 0.9;
+        }
+        
+        .dessert-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15), 0 0 15px rgba(201, 179, 140, 0.3);
+            border-color: rgba(201, 179, 140, 0.6);
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 200;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-content {
+            position: relative;
+            max-width: 90%;
+            max-height: 90%;
+            background-color: #f0e9d9;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 0 0 2px #c9b38c, 0 10px 40px rgba(0, 0, 0, 0.3);
+        }
+        
+        .modal-image {
+            max-width: 100%;
+            max-height: 70vh;
+            object-fit: contain;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+        
+        .modal-info {
+            text-align: center;
+        }
+        
+        .modal-name {
+            font-family: 'Cinzel', serif;
+            font-size: 1.8rem;
+            color: #8a7047;
+            margin-bottom: 0.5rem;
+        }
+        
+        .modal-desc {
+            font-size: 1.1rem;
+            color: #8a7047;
+            line-height: 1.5;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: -15px;
+            right: -15px;
+            width: 40px;
+            height: 40px;
+            background-color: #f0e9d9;
+            color: #8a7047;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.5rem;
+            cursor: pointer;
+            border: 2px solid #c9b38c;
+            box-shadow: 0 0 10px rgba(201, 179, 140, 0.4);
+            transition: all 0.3s ease;
+        }
+        
+        .close-modal:hover {
+            background-color: #c9b38c;
+            color: #5c4f35;
+            transform: rotate(90deg);
+        }
+        
+        .shimmer {
+            background: linear-gradient(90deg, 
+                rgba(201, 179, 140, 0.1) 0%, 
+                rgba(210, 180, 140, 0.2) 25%, 
+                rgba(201, 179, 140, 0.1) 50%, 
+                rgba(210, 180, 140, 0.2) 75%, 
+                rgba(201, 179, 140, 0.1) 100%);
+            background-size: 200% 100%;
+            animation: shimmer 3s infinite linear;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            border-radius: inherit;
+        }
+        
+        .door-decoration {
+            position: absolute;
+            width: 70%;
+            height: 70%;
+            border: 8px solid #c9b38c;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .door-decoration::before {
+            content: '';
+            position: absolute;
+            width: 80%;
+            height: 80%;
+            border: 4px solid #d2b48c;
+            opacity: 0.6;
+        }
+        
+        .door-decoration::after {
+            content: '';
+            position: absolute;
+            width: 40%;
+            height: 40%;
+            border: 6px solid #c9b38c;
+            background-color: rgba(201, 179, 140, 0.1);
+        }
+        
+        .door-message {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            text-align: center;
+            transform: translateY(-50%);
+            font-family: 'Cinzel', serif;
+            font-size: 2.5rem;
+            color: #8a7047;
+            text-shadow: 0 2px 10px rgba(138, 112, 71, 0.3);
+            z-index: 10;
+            pointer-events: none;
+            opacity: 0.9;
+        }
+        
+        .door-message-small {
+            display: block;
+            font-size: 1.5rem;
+            margin-top: 1rem;
+            font-family: 'Cormorant Garamond', serif;
+            opacity: 0.8;
+        }
+        
+        .door-pulse {
+            animation: pulse 2s infinite;
+        }
+        
+        @media (max-width: 768px) {
+            .category-container {
+                grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+                gap: 1.5rem;
+            }
+            
+            .gallery-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+                gap: 1.5rem;
+            }
+            
+            .category-card {
+                height: 140px;
+                padding: 1rem;
+            }
+            
+            .category-title {
+                font-size: 1.3rem;
+            }
+            
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            .gallery-title {
+                font-size: 2rem;
+            }
+            
+            .dessert-item {
+                height: 260px;
+            }
+            
+            .dessert-image {
+                height: 160px;
+            }
+            
+            .modal-content {
+                padding: 1.5rem;
+            }
+            
+            .modal-name {
+                font-size: 1.5rem;
+            }
+            
+            .modal-desc {
+                font-size: 1rem;
+            }
+        }
+        
+        /* Royal Animations */
+        @keyframes shimmer {
+            0% {
+                background-position: -100% 0;
+            }
+            100% {
+                background-position: 200% 0;
+            }
+        }
+        
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            50% {
+                transform: scale(1.05);
+                opacity: 0.8;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Background Image -->
+    <div class="royal-background"></div>
+    
+    <!-- Royal Background Elements -->
+    <div class="royal-bg"></div>
+    <div class="royal-border"></div>
+    <div class="royal-corner royal-corner-tl"></div>
+    <div class="royal-corner royal-corner-tr"></div>
+    <div class="royal-corner royal-corner-bl"></div>
+    <div class="royal-corner royal-corner-br"></div>
+    
+    <!-- Castle Door Animation -->
+    <div class="castle-door" id="castleDoor">
+        <div class="door-left">
+            <div class="door-pattern"></div>
+            <div class="door-handle"></div>
+            <div class="door-design">
+                <div class="shimmer"></div>
+                <div class="door-decoration"></div>
+            </div>
+        </div>
+        <div class="door-right">
+            <div class="door-pattern"></div>
+            <div class="door-handle"></div>
+            <div class="door-design">
+                <div class="shimmer"></div>
+                <div class="door-decoration"></div>
+            </div>
+        </div>
+        <div class="door-message door-pulse">
+            <span class="door-message-small">مرحبا بكم في حلويات الشيف هشام</span>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="menu-container">
+        <h1><b>قصر الشيخة</b></h1>
+        <h1><b>Qasr Al Sheikha</b></h1>
+        <h1><b>حلويات الشيف هشام</b></h1>
+        
+        <div class="royal-divider">
+            <div class="royal-divider-icon">✦</div>
+        </div>
+        
+        <div class="category-container">
+            <div class="category-card" data-category="arabic">
+                <div class="shimmer"></div>
+                <h2 class="category-title">حلو عربي
+				Arabic Desserts</h2>
+            </div>
+            
+            <div class="category-card" data-category="Special">
+                <div class="shimmer"></div>
+                <h2 class="category-title">كيك مميز</h2>
+            </div>
+            
+            <div class="category-card" data-category="tart">
+                <div class="shimmer"></div>
+                <h2 class="category-title">جميع التارتات</h2>
+            </div>
+            
+            <div class="category-card" data-category="birthday">
+                <div class="shimmer"></div>
+                <h2 class="category-title">كيك أعياد ميلاد</h2>
+            </div>
+            
+            <div class="category-card" data-category="ramadan">
+                <div class="shimmer"></div>
+                <h2 class="category-title">حلويات رمضان</h2>
+            </div>
+            
+            <div class="category-card" data-category="bakery">
+                <div class="shimmer"></div>
+                <h2 class="category-title">جميع المخبوزات</h2>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Gallery Container -->
+    <div class="gallery-container" id="gallery">
+        <div class="gallery-header">
+            <button class="back-button" id="backButton">← العودة إلى القائمة</button>
+            <h2 class="gallery-title" id="galleryTitle">Arabic Desserts</h2>
+        </div>
+        <div class="gallery-grid" id="galleryGrid"></div>
+    </div>
+    
+    <!-- Modal for Image Zoom -->
+    <div class="modal" id="imageModal">
+        <div class="modal-content">
+            <span class="close-modal" id="closeModal">X</span>
+            <img src="" id="modalImage" class="modal-image">
+            <div class="modal-info">
+                <h3 class="modal-name" id="modalName">Dessert Name</h3>
+                <p class="modal-desc" id="modalDesc">Description of the dessert goes here...</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Dessert data with names and descriptions
+        const desserts = {
+            arabic: [
+                { 
+                    image: "arabic1.jpeg",
+                    name: "بقلاوة بالفستق",
+                    description: "بقلاوة تقليدية محشوة بالفستق الحلبي المطحون مع طبقات رقيقة من العجين ومغمورة بالق syrup"
+                },
+                { 
+                    image: "arabic2.jpeg",
+                    name: "كنافة بالنوتيلا",
+                    description: "كنافة هشة محشوة بالنوتيلا الشهية مع قوام كريمي ومغطاة بالق syrup الذهبي"
+                },
+                { 
+                    image: "arabic3.jpeg",
+                    name: "مملوك بالقشطة",
+                    description: "حلوى المملوك التقليدية مع حشوة القشطة الطازجة ومغطاة بالفستق المقطع"
+                },
+                { 
+                    image: "arabic5.jpeg",
+                    name: "هريسة باللوز",
+                    description: "هريسة لبنانية ناعمة مع نكهة متميزة من ماء الورد ومغطاة بشرائح اللوز المحمص"
+                },
+                { 
+                    image: "arabic6.jpeg",
+                    name: "بسبوسة بالكوكو",
+                    description: "بسبوسة تقليدية مع نكهة الكوكو المميزة ومغمورة بالق syrup المعطر بماء الورد"
+                },
+                { 
+                    image: "arabic7.jpeg",
+                    name: "شعيبيات بالقشطة",
+                    description: "حلوى الشعيبيات المقرمشة محشوة بالقشطة الطازجة ومغطاة بالسكر البودرة"
+                },
+                { 
+                    image: "arabic8.jpeg",
+                    name: "غريبة بالفستق",
+                    description: "غريبة هشة مع قطع الفستق المحمص ونكهة الزبدة الفاخرة"
+                },
+                { 
+                    image: "arabic9.jpeg",
+                    name: "معمول بالتمر",
+                    description: "معمول تقليدي محشو بتمر العنبرة مع نكهة الهيل والقرفة"
+                },
+                { 
+                    image: "arabic10.jpeg",
+                    name: "حلوى الجبن",
+                    description: "حلوى الجبن اللبنانية مع قوام كريمي ونكهة ماء الورد والهيل"
+                },
+                { 
+                    image: "arabic11.jpeg",
+                    name: "بلح الشام",
+                    description: "بلح الشام المقرمش من الخارج والطري من الداخل مع syrup معطر"
+                },
+                { 
+                    image: "arabic12.jpeg",
+                    name: "كعك بالعجوة",
+                    description: "كعك تقليدي محشو بعجوة التمر مع نكهة السمسم المحمص"
+                },
+                { 
+                    image: "arabic13.jpeg",
+                    name: "زلابية بالقشطة",
+                    description: "زلابية مقلية هشة محشوة بالقشطة الطازجة ومغطاة بالعسل"
+                },
+                { 
+                    image: "arabic14.jpeg",
+                    name: "كنافة بالقشطة",
+                    description: "كنافة نابلسية تقليدية محشوة بالقشطة الطازجة ومغمورة بالق syrup"
+                }
+            ],
+            Special: [
+                { 
+                    image: "mangocheesecake.jpeg",
+                    name: "تشيز كيك المانجو",
+                    description: "تشيز كيك كريمي مع طبقة مانجو طازجة ونكهة الفانيلا"
+                }
+            ],
+            tart: [
+                { 
+                    image: "tart1.jpeg",
+                    name: "تارت الشوكولاتة",
+                    description: "تارت بقاعدة بسكويت محشوة بشوكولاتة غنية ومغطاة بكريمة شانتيه"
+                }
+            ],
+            birthday: [
+                { 
+                    image: "birthday1.jpeg",
+                    name: "كيك عيد ميلاد",
+                    description: "كيك فانيليا مع طبقات من الكريمة والتزيين الشخصي حسب الطلب"
+                }
+            ],
+            ramadan: [
+                { 
+                    image: "ramadan1.jpeg",
+                    name: "قطايف بالقشطة",
+                    description: "قطايف محشوة بالقشطة أو الجوز ومقلية حتى الذهبية"
+                }
+            ],
+            bakery: [
+                { 
+                    image: "bakery1.jpeg",
+                    name: "خبز التوست الفرنسي",
+                    description: "خبز توست فرنسي طازج مع قشرة مقرمشة وداخل طري"
+                }
+            ]
+        };
+
+        // Auto-open door on page load
+        window.addEventListener('load', function() {
+            const castleDoor = document.getElementById('castleDoor');
+            
+            // Start opening animation
+            castleDoor.classList.add('door-open');
+            
+            // Remove door after animation completes (2.5s + buffer)
+            setTimeout(function() {
+                castleDoor.style.display = 'none';
+            }, 2500);
+        });
+        
+        // Category click event
+        const categoryCards = document.querySelectorAll('.category-card');
+        categoryCards.forEach(card => {
+            card.addEventListener('click', function() {
+                const category = this.dataset.category;
+                const categoryTitle = this.querySelector('.category-title').textContent;
+                
+                document.getElementById('galleryTitle').textContent = categoryTitle;
+                const galleryGrid = document.getElementById('galleryGrid');
+                galleryGrid.innerHTML = '';
+                
+                desserts[category].forEach(dessert => {
+                    const dessertItem = document.createElement('div');
+                    dessertItem.className = 'dessert-item';
+                    
+                    const dessertImage = document.createElement('div');
+                    dessertImage.className = 'dessert-image';
+                    dessertImage.style.backgroundImage = `url(${dessert.image})`;
+                    
+                    const dessertInfo = document.createElement('div');
+                    dessertInfo.className = 'dessert-info';
+                    
+                    const dessertName = document.createElement('h3');
+                    dessertName.className = 'dessert-name';
+                    dessertName.textContent = dessert.name;
+                    
+                    const dessertDesc = document.createElement('p');
+                    dessertDesc.className = 'dessert-desc';
+                    dessertDesc.textContent = dessert.description;
+                    
+                    dessertInfo.appendChild(dessertName);
+                    dessertInfo.appendChild(dessertDesc);
+                    dessertItem.appendChild(dessertImage);
+                    dessertItem.appendChild(dessertInfo);
+                    
+                    dessertItem.addEventListener('click', function() {
+                        openModal(dessert);
+                    });
+                    
+                    galleryGrid.appendChild(dessertItem);
+                });
+                
+                document.getElementById('gallery').style.display = 'block';
+            });
+        });
+        
+        // Back button event
+        document.getElementById('backButton').addEventListener('click', function() {
+            document.getElementById('gallery').style.display = 'none';
+        });
+        
+        // Modal functions
+        const modal = document.getElementById('imageModal');
+        const modalImage = document.getElementById('modalImage');
+        const modalName = document.getElementById('modalName');
+        const modalDesc = document.getElementById('modalDesc');
+        
+        function openModal(dessert) {
+            modalImage.src = dessert.image;
+            modalName.textContent = dessert.name;
+            modalDesc.textContent = dessert.description;
+            modal.style.display = 'flex';
+        }
+        
+        document.getElementById('closeModal').addEventListener('click', function() {
+            modal.style.display = 'none';
+        });
+        
+        // Close modal when clicking outside
+        window.addEventListener('click', function(event) {
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>
