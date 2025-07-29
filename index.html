@@ -31,17 +31,16 @@
 
     .boxes {
       display: grid;
-      grid-template-columns: repeat(3, auto);  /* 3 أعمدة */
-      grid-template-rows: repeat(2, auto);    /* صفين */
-      gap: 10px;                              /* مسافة صغيرة بين الصناديق */
-      justify-content: center;                /* توسيط كل الشبكة بالصفحة */
-      margin-top: 320px;                      /* إبعاد عن القصر */
+      grid-template-columns: repeat(3, 1fr); /* 3 صناديق بالصف */
+      grid-template-rows: repeat(2, auto);
+      gap: 10px;
+      justify-content: center;
+      margin: 320px auto 0;
+      max-width: 90%; /* ما يتعدّى الشاشة */
     }
 
     .box {
       background: #fff;
-      width: 160px;
-      height: 90px;
       border-radius: 10px;
       box-shadow: 0px 4px 8px rgba(0,0,0,0.2);
       display: flex;
@@ -50,12 +49,27 @@
       align-items: center;
       font-size: 1rem;
       font-weight: bold;
+      aspect-ratio: 16/9;  /* يخلي الشكل متناسب */
+      width: 100%;         /* يملى العمود */
     }
 
     .box span {
       font-size: 0.8rem;
       color: #444;
       margin-top: 5px;
+    }
+
+    /* تعديل للأجهزة الصغيرة */
+    @media (max-width: 600px) {
+      .boxes {
+        gap: 5px; /* مسافة أصغر */
+      }
+      .box {
+        font-size: 0.9rem;
+      }
+      .box span {
+        font-size: 0.7rem;
+      }
     }
   </style>
 </head>
