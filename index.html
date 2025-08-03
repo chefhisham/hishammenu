@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>قصر الشيخة</title>
   <style>
+  
     html, body {
       margin: 0;
       padding: 0;
@@ -31,12 +32,12 @@
 
     .boxes {
       display: grid;
-      grid-template-columns: repeat(3, 1fr); /* 3 صناديق بالصف */
+      grid-template-columns: repeat(3, 1fr); 
       grid-template-rows: repeat(2, auto);
-      gap: 10px;
+      gap: 15px;
       justify-content: center;
       margin: 320px auto 0;
-      max-width: 90%; /* ما يتعدّى الشاشة */
+      max-width: 80%;
     }
 
     .box {
@@ -49,8 +50,14 @@
       align-items: center;
       font-size: 1rem;
       font-weight: bold;
-      aspect-ratio: 16/9;  /* يخلي الشكل متناسب */
-      width: 100%;         /* يملى العمود */
+      aspect-ratio: 16/9;
+      width: 100%;
+      cursor: pointer;
+      transition: transform 0.3s;
+    }
+
+    .box:hover {
+      transform: scale(1.05);
     }
 
     .box span {
@@ -59,16 +66,142 @@
       margin-top: 5px;
     }
 
-    /* تعديل للأجهزة الصغيرة */
+    /* Category items view */
+    .category-items {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(255, 255, 255, 0.95);
+      z-index: 100;
+      overflow-y: auto;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+
+    .back-button {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background-color: #3b2b1a;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 1rem;
+      z-index: 101;
+    }
+
+    .items-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 20px;
+      margin-top: 60px;
+    }
+
+    .item-card {
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      overflow: hidden;
+      transition: transform 0.3s;
+    }
+
+    .item-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .item-image {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      cursor: pointer;
+    }
+
+    .item-info {
+      padding: 15px;
+    }
+
+    .item-name {
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    .item-description {
+      font-size: 0.9rem;
+      color: #555;
+    }
+
+    /* Image viewer */
+    .image-viewer {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.9);
+      z-index: 200;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .viewer-content {
+      max-width: 90%;
+      max-height: 90%;
+    }
+
+    .viewer-image {
+      max-width: 100%;
+      max-height: 80vh;
+      object-fit: contain;
+    }
+
+    .close-viewer {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      color: white;
+      font-size: 2rem;
+      cursor: pointer;
+    }
+
+    /* للأجهزة الصغيرة (موبايل) */
     @media (max-width: 600px) {
       .boxes {
-        gap: 5px; /* مسافة أصغر */
+        gap: 5px;
+        max-width: 95%;
       }
       .box {
         font-size: 0.9rem;
       }
       .box span {
         font-size: 0.7rem;
+      }
+      
+      .items-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* للأجهزة الكبيرة (لابتوب/ديسكتوب) */
+    @media (min-width: 1024px) {
+      .boxes {
+        max-width: 900px;
+        gap: 20px;
+      }
+      .box {
+        font-size: 1.2rem;
+      }
+      .box span {
+        font-size: 0.9rem;
+      }
+      
+      .items-grid {
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
       }
     }
   </style>
@@ -78,12 +211,192 @@
   <h2>حلويات الشيف هشام</h2>
 
   <div class="boxes">
-    <div class="box">حلو عربي <span>Arabic Desserts</span></div>
-    <div class="box">كيك مميز <span>Special Cakes</span></div>
-    <div class="box">جميع المخبوزات <span>Bakery</span></div>
-    <div class="box">جميع التارتات <span>Tarts</span></div>
-    <div class="box">كيك أعياد ميلاد <span>Birthday Cakes</span></div>
-    <div class="box">حلويات رمضان <span>Ramadan Desserts</span></div>
+    <div class="box" onclick="showCategory('arabic')">حلو عربي <span>Arabic Sweets</span></div>
+    <div class="box" onclick="showCategory('Special')">كيك مميز <span>Special Cake</span></div>
+    <div class="box" onclick="showCategory('bakery')">جمع الخبوزات <span>Bakery</span></div>
+    <div class="box" onclick="showCategory('tart')">جمع التارت <span>Tart</span></div>
+    <div class="box" onclick="showCategory('birthday')">عياد ميلاد <span>Birthday Cake</span></div>
+    <div class="box" onclick="showCategory('ramadan')">حذويات رمضان <span>Ramadan Sweets</span></div>
   </div>
+
+  <!-- Category items view -->
+  <div id="categoryItems" class="category-items">
+    <button class="back-button" onclick="hideCategory()">رجوع</button>
+    <h2 id="categoryTitle" style="margin-top: 50px;"></h2>
+    <div class="items-grid" id="itemsContainer"></div>
+  </div>
+
+  <!-- Image viewer -->
+  <div class="image-viewer" id="imageViewer">
+    <span class="close-viewer" onclick="closeImageViewer()">&times;</span>
+    <div class="viewer-content">
+      <img class="viewer-image" id="viewedImage" src="" alt="">
+      <div style="color: white; text-align: center; margin-top: 10px;">
+        <h3 id="viewedImageName"></h3>
+        <p id="viewedImageDescription"></p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const desserts = {
+      arabic: [
+        { 
+          image: "arabic1.jpeg",
+          name: "بقلاوة بالفستق",
+          description: "بقلاوة تقليدية محشوة بالفستق الحلبي المطحون مع طبقات رقيقة من العجين ومغمورة بالق syrup"
+        },
+        { 
+          image: "arabic2.jpeg",
+          name: "كنافة بالنوتيلا",
+          description: "كنافة هشة محشوة بالنوتيلا الشهية مع قوام كريمي ومغطاة بالق syrup الذهبي"
+        },
+        { 
+          image: "arabic3.jpeg",
+          name: "مملوك بالقشطة",
+          description: "حلوى المملوك التقليدية مع حشوة القشطة الطازجة ومغطاة بالفستق المقطع"
+        },
+        { 
+          image: "arabic5.jpeg",
+          name: "هريسة باللوز",
+          description: "هريسة لبنانية ناعمة مع نكهة متميزة من ماء الورد ومغطاة بشرائح اللوز المحمص"
+        },
+        { 
+          image: "arabic9.jpeg",
+          name: "بسبوسة بالكوكو",
+          description: "بسبوسة تقليدية مع نكهة الكوكو المميزة ومغمورة بالق syrup المعطر بماء الورد"
+        },
+        { 
+          image: "arabic7.jpeg",
+          name: "شعيبيات بالقشطة",
+          description: "حلوى الشعيبيات المقرمشة محشوة بالقشطة الطازجة ومغطاة بالسكر البودرة"
+        },
+        { 
+          image: "arabic8.jpeg",
+          name: "غريبة بالفستق",
+          description: "غريبة هشة مع قطع الفستق المحمص ونكهة الزبدة الفاخرة"
+        },
+        { 
+          image: "arabic6.jpeg",
+          name: "معمول بالتمر",
+          description: "معمول تقليدي محشو بتمر العنبرة مع نكهة الهيل والقرفة"
+        },
+        { 
+          image: "arabic10.jpeg",
+          name: "حلوى الجبن",
+          description: "حلوى الجبن اللبنانية مع قوام كريمي ونكهة ماء الورد والهيل"
+        },
+        { 
+          image: "arabic11.jpeg",
+          name: "بلح الشام",
+          description: "بلح الشام المقرمش من الخارج والطري من الداخل مع syrup معطر"
+        },
+        { 
+          image: "arabic12.jpeg",
+          name: "كعك بالعجوة",
+          description: "كعك تقليدي محشو بعجوة التمر مع نكهة السمسم المحمص"
+        },
+        { 
+          image: "arabic13.jpeg",
+          name: "زلابية بالقشطة",
+          description: "زلابية مقلية هشة محشوة بالقشطة الطازجة ومغطاة بالعسل"
+        },
+        { 
+          image: "arabic14.jpeg",
+          name: "كنافة بالقشطة",
+          description: "كنافة نابلسية تقليدية محشوة بالقشطة الطازجة ومغمورة بالق syrup"
+        }
+      ],
+      Special: [
+        { 
+          image: "mangocheesecake.jpeg",
+          name: "تشيز كيك المانجو",
+          description: "تشيز كيك كريمي مع طبقة مانجو طازجة ونكهة الفانيلا"
+        }
+      ],
+      tart: [
+        { 
+          image: "tart1.jpeg",
+          name: "تارت الشوكولاتة",
+          description: "تارت بقاعدة بسكويت محشوة بشوكولاتة غنية ومغطاة بكريمة شانتيه"
+        }
+      ],
+      birthday: [
+        { 
+          image: "birthday1.jpeg",
+          name: "كيك عيد ميلاد",
+          description: "كيك فانيليا مع طبقات من الكريمة والتزيين الشخصي حسب الطلب"
+        }
+      ],
+      ramadan: [
+        { 
+          image: "ramadan1.jpeg",
+          name: "قطايف بالقشطة",
+          description: "قطايف محشوة بالقشطة أو الجوز ومقلية حتى الذهبية"
+        }
+      ],
+      bakery: [
+        { 
+          image: "bakery1.jpeg",
+          name: "خبز التوست الفرنسي",
+          description: "خبز توست فرنسي طازج مع قشرة مقرمشة وداخل طري"
+        }
+      ]
+    };
+
+    const categoryTitles = {
+      arabic: "حلو عربي",
+      Special: "كيك مميز",
+      tart: "جمع التارت",
+      birthday: "عياد ميلاد",
+      ramadan: "حذويات رمضان",
+      bakery: "جمع الخبوزات"
+    };
+
+    function showCategory(category) {
+      document.getElementById('categoryTitle').textContent = categoryTitles[category];
+      const itemsContainer = document.getElementById('itemsContainer');
+      itemsContainer.innerHTML = '';
+      
+      desserts[category].forEach(item => {
+        const itemCard = document.createElement('div');
+        itemCard.className = 'item-card';
+        itemCard.innerHTML = `
+          <img class="item-image" src="${item.image}" alt="${item.name}" onclick="showImage('${item.image}', '${item.name}', '${item.description}')">
+          <div class="item-info">
+            <div class="item-name">${item.name}</div>
+            <div class="item-description">${item.description}</div>
+          </div>
+        `;
+        itemsContainer.appendChild(itemCard);
+      });
+      
+      document.getElementById('categoryItems').style.display = 'block';
+    }
+
+    function hideCategory() {
+      document.getElementById('categoryItems').style.display = 'none';
+    }
+
+    function showImage(imageSrc, name, description) {
+      document.getElementById('viewedImage').src = imageSrc;
+      document.getElementById('viewedImageName').textContent = name;
+      document.getElementById('viewedImageDescription').textContent = description;
+      document.getElementById('imageViewer').style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeImageViewer() {
+      document.getElementById('imageViewer').style.display = 'none';
+      document.body.style.overflow = 'auto';
+    }
+
+    // Close image viewer when clicking outside the image
+    document.getElementById('imageViewer').addEventListener('click', function(e) {
+      if (e.target === this) {
+        closeImageViewer();
+      }
+    });
+  </script>
 </body>
 </html>
