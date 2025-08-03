@@ -1,11 +1,179 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="ar" dir="ltr">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>قصر الشيخة</title>
   <style>
-  
+    @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;900&family=Cormorant+Garamond:wght@400;600;700&display=swap');
+    
+    /* Castle Door Animation Styles */
+    .castle-door {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 1000;
+        display: flex;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23d2b48c' fill-opacity='0.1' fill-rule='evenodd'/%3E%3C/svg%3E");
+        cursor: pointer;
+    }
+    
+    .door-left, .door-right {
+        width: 50%;
+        height: 100%;
+        background-color: #e8dcc8;
+        background-image: linear-gradient(135deg, #e8dcc8 0%, #d9cdb3 100%);
+        position: relative;
+        transition: transform 2.5s cubic-bezier(0.4, 0, 0.2, 1);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+    }
+    
+    .door-left {
+        border-right: 12px solid #c9b38c;
+        transform-origin: left;
+    }
+    
+    .door-right {
+        border-left: 12px solid #c9b38c;
+        transform-origin: right;
+    }
+    
+    .door-open .door-left {
+        transform: perspective(1500px) rotateY(-105deg);
+    }
+    
+    .door-open .door-right {
+        transform: perspective(1500px) rotateY(105deg);
+    }
+    
+    .door-handle {
+        width: 40px;
+        height: 80px;
+        background-color: #c9b38c;
+        background-image: linear-gradient(to bottom, #d2b48c 0%, #c9b38c 50%, #b8a27c 100%);
+        border-radius: 20px;
+        position: absolute;
+        top: 50%;
+        box-shadow: 0 0 20px rgba(201, 179, 140, 0.6);
+    }
+    
+    .door-left .door-handle {
+        right: 50px;
+    }
+    
+    .door-right .door-handle {
+        left: 50px;
+    }
+    
+    .door-design {
+        width: 80%;
+        height: 80%;
+        border: 12px solid #c9b38c;
+        border-image: linear-gradient(45deg, #d2b48c, #c9b38c, #b8a27c) 1;
+        margin: auto;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+    }
+    
+    .door-design::before {
+        content: '';
+        position: absolute;
+        top: -12px;
+        left: -12px;
+        right: -12px;
+        bottom: -12px;
+        border: 2px solid #d2b48c;
+        opacity: 0.3;
+        pointer-events: none;
+    }
+    
+    .door-pattern {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        opacity: 0.1;
+        background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23d2b48c' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    }
+    
+    .shimmer {
+        background: linear-gradient(90deg, 
+            rgba(201, 179, 140, 0.1) 0%, 
+            rgba(210, 180, 140, 0.2) 25%, 
+            rgba(201, 179, 140, 0.1) 50%, 
+            rgba(210, 180, 140, 0.2) 75%, 
+            rgba(201, 179, 140, 0.1) 100%);
+        background-size: 200% 100%;
+        animation: shimmer 3s infinite linear;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        border-radius: inherit;
+    }
+    
+    .door-decoration {
+        position: absolute;
+        width: 70%;
+        height: 70%;
+        border: 8px solid #c9b38c;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    
+    .door-decoration::before {
+        content: '';
+        position: absolute;
+        width: 80%;
+        height: 80%;
+        border: 4px solid #d2b48c;
+        opacity: 0.6;
+    }
+    
+    .door-decoration::after {
+        content: '';
+        position: absolute;
+        width: 40%;
+        height: 40%;
+        border: 6px solid #c9b38c;
+        background-color: rgba(201, 179, 140, 0.1);
+    }
+    
+    @keyframes shimmer {
+        0% {
+            background-position: -100% 0;
+        }
+        100% {
+            background-position: 200% 0;
+        }
+    }
+    
+    @keyframes pulse {
+        0% {
+            transform: scale(1);
+            opacity: 1;
+        }
+        50% {
+            transform: scale(1.05);
+            opacity: 0.8;
+        }
+        100% {
+            transform: scale(1);
+            opacity: 1;
+        }
+    }
+
+    /* Main Website Styles */
     html, body {
       margin: 0;
       padding: 0;
@@ -16,6 +184,10 @@
       background-size: cover;
       color: #3b2b1a;
       text-align: center;
+    }
+
+    .content {
+      display: none; /* Initially hidden until door animation completes */
     }
 
     h1 {
@@ -84,7 +256,7 @@
     .back-button {
       position: absolute;
       top: 20px;
-      right: 20px;
+      left: 20px;
       background-color: #3b2b1a;
       color: white;
       border: none;
@@ -169,7 +341,7 @@
       cursor: pointer;
     }
 
-    /* للأجهزة الصغيرة (موبايل) */
+    /* For small devices (mobile) */
     @media (max-width: 600px) {
       .boxes {
         gap: 5px;
@@ -187,7 +359,7 @@
       }
     }
 
-    /* للأجهزة الكبيرة (لابتوب/ديسكتوب) */
+    /* For large devices (laptop/desktop) */
     @media (min-width: 1024px) {
       .boxes {
         max-width: 900px;
@@ -207,38 +379,76 @@
   </style>
 </head>
 <body>
-  <h1>قصر الشيخة</h1>
-  <h2>حلويات الشيف هشام</h2>
-
-  <div class="boxes">
-    <div class="box" onclick="showCategory('arabic')">حلو عربي <span>Arabic Sweets</span></div>
-    <div class="box" onclick="showCategory('Special')">كيك مميز <span>Special Cake</span></div>
-    <div class="box" onclick="showCategory('bakery')">جمع الخبوزات <span>Bakery</span></div>
-    <div class="box" onclick="showCategory('tart')">جمع التارت <span>Tart</span></div>
-    <div class="box" onclick="showCategory('birthday')"> كيك اعياد ميلاد <span>Birthday Cake</span></div>
-    <div class="box" onclick="showCategory('ramadan')">حلوايات رمضان <span>Ramadan Sweets</span></div>
+  <!-- Castle Door Animation -->
+  <div class="castle-door" id="castleDoor">
+      <div class="door-left">
+          <div class="door-pattern"></div>
+          <div class="door-handle"></div>
+          <div class="door-design">
+              <div class="shimmer"></div>
+              <div class="door-decoration"></div>
+          </div>
+      </div>
+      <div class="door-right">
+          <div class="door-pattern"></div>
+          <div class="door-handle"></div>
+          <div class="door-design">
+              <div class="shimmer"></div>
+              <div class="door-decoration"></div>
+          </div>
+      </div>
   </div>
 
-  <!-- Category items view -->
-  <div id="categoryItems" class="category-items">
-    <button class="back-button" onclick="hideCategory()">رجوع</button>
-    <h2 id="categoryTitle" style="margin-top: 50px;"></h2>
-    <div class="items-grid" id="itemsContainer"></div>
-  </div>
+  <!-- Main Website Content (hidden initially) -->
+  <div class="content" id="mainContent">
+    <h1>قصر الشيخة</h1>
+    <h2>حلويات الشيف هشام</h2>
 
-  <!-- Image viewer -->
-  <div class="image-viewer" id="imageViewer">
-    <span class="close-viewer" onclick="closeImageViewer()">&times;</span>
-    <div class="viewer-content">
-      <img class="viewer-image" id="viewedImage" src="" alt="">
-      <div style="color: white; text-align: center; margin-top: 10px;">
-        <h3 id="viewedImageName"></h3>
-        <p id="viewedImageDescription"></p>
+    <div class="boxes">
+      <div class="box" onclick="showCategory('arabic')">حلو عربي <span>Arabic Sweets</span></div>
+      <div class="box" onclick="showCategory('Special')">كيك مميز <span>Special Cake</span></div>
+      <div class="box" onclick="showCategory('bakery')">جمع الخبوزات <span>Bakery</span></div>
+      <div class="box" onclick="showCategory('tart')">جمع التارت <span>Tart</span></div>
+      <div class="box" onclick="showCategory('birthday')"> كيك اعياد ميلاد <span>Birthday Cake</span></div>
+      <div class="box" onclick="showCategory('ramadan')">حلوايات رمضان <span>Ramadan Sweets</span></div>
+    </div>
+
+    <!-- Category items view -->
+    <div id="categoryItems" class="category-items">
+      <button class="back-button" onclick="hideCategory()">رجوع</button>
+      <h2 id="categoryTitle" style="margin-top: 50px;"></h2>
+      <div class="items-grid" id="itemsContainer"></div>
+    </div>
+
+    <!-- Image viewer -->
+    <div class="image-viewer" id="imageViewer">
+      <span class="close-viewer" onclick="closeImageViewer()">&times;</span>
+      <div class="viewer-content">
+        <img class="viewer-image" id="viewedImage" src="" alt="">
+        <div style="color: white; text-align: center; margin-top: 10px;">
+          <h3 id="viewedImageName"></h3>
+          <p id="viewedImageDescription"></p>
+        </div>
       </div>
     </div>
   </div>
 
   <script>
+    // Auto-open door on page load
+    window.addEventListener('load', function() {
+        const castleDoor = document.getElementById('castleDoor');
+        const mainContent = document.getElementById('mainContent');
+        
+        // Start opening animation
+        castleDoor.classList.add('door-open');
+        
+        // Show main content and remove door after animation completes (2.5s + buffer)
+        setTimeout(function() {
+            castleDoor.style.display = 'none';
+            mainContent.style.display = 'block';
+        }, 2500);
+    });
+
     const desserts = {
       arabic: [
         { 
@@ -400,5 +610,3 @@
   </script>
 </body>
 </html>
-
-
