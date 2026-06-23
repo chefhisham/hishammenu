@@ -377,6 +377,7 @@
     }
   </style>
 </head>
+  
 <body>
   <!-- Castle Door Animation -->
   <div class="castle-door" id="castleDoor">
@@ -607,5 +608,16 @@
       }
     });
   </script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+const SUPABASE_URL = "https://vtkdybaprivwqgwnsvmz.supabase.co";
+const SUPABASE_KEY = "sb_publishable_U7rlQfGEce347w4_POFU_Q_XYtlrJbW";
+
+const supabase = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
+</script>
 </body>
 </html>
